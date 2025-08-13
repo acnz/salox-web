@@ -8,20 +8,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap" rel="stylesheet">
-    <!-- Importa a biblioteca Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #020617; /* slate-950 */
-            color: #cbd5e1; /* slate-300 */
+            background-color: #0A0A10;
+            color: #E0E0E0;
         }
-        .hero-bg {
+        #hero-section {
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* Alinha o conteúdo à esquerda */
             position: relative;
             overflow: hidden;
-            background-color: #020617; /* slate-950 */
         }
-        #3d-canvas-container {
+        #webgl-container {
             position: absolute;
             top: 0;
             left: 0;
@@ -29,54 +31,36 @@
             height: 100%;
             z-index: 1;
         }
-        #3d-canvas-container canvas {
-            display: block;
-            width: 100%;
-            height: 100%;
-        }
         .content-wrapper {
             position: relative;
-            z-index: 2; /* Garante que o conteúdo fique sobre a animação */
+            z-index: 2;
+            max-width: 1200px;
+            width: 100%;
+            padding: 0 4rem; /* Mais padding à esquerda */
         }
         .glass-card {
-            background-color: rgba(15, 23, 42, 0.5); /* slate-900/50 */
-            border: 1px solid rgba(51, 65, 85, 0.5); /* slate-700/50 */
+            background-color: rgba(15, 23, 42, 0.5);
+            border: 1px solid rgba(51, 65, 85, 0.5);
             backdrop-filter: blur(12px);
             transition: transform 0.3s ease, border-color 0.3s ease;
         }
         .glass-card:hover {
             transform: translateY(-8px);
-            border-color: rgba(59, 130, 246, 0.7); /* blue-500/70 */
+            border-color: rgba(59, 130, 246, 0.7);
         }
         .primary-cta {
-            background: linear-gradient(to right, #3b82f6, #6366f1); /* blue-500 to indigo-500 */
+            background: linear-gradient(to right, #3b82f6, #6366f1);
             transition: box-shadow 0.3s ease;
         }
         .primary-cta:hover {
             box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
-        }
-        .modal-backdrop {
-            background-color: rgba(0, 0, 0, 0.7);
-            backdrop-filter: blur(8px);
-        }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3b82f6;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body class="antialiased">
 
     <!-- Cabeçalho e Navegação -->
-    <header class="bg-slate-950/70 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 border-b border-slate-800/50">
+    <header class="bg-transparent fixed top-0 left-0 right-0 z-50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
             <div class="text-2xl font-black text-white tracking-wider">SALOX</div>
             <nav class="hidden md:flex items-center space-x-8">
@@ -92,17 +76,19 @@
 
     <main>
         <!-- Seção Hero com Animação 3D -->
-        <section class="hero-bg min-h-screen flex items-center justify-center pt-24 pb-16">
-            <div id="3d-canvas-container"></div>
-            <div class="content-wrapper container mx-auto px-6 text-center">
-                <h1 class="text-5xl md:text-7xl font-black text-white leading-tight mb-6">Engenharia que <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">Transforma</span> a Indústria.</h1>
-                <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10">A Salox, um projeto da Astronium, nasce para integrar inteligência e automação avançada, redefinindo os limites da eficiência industrial.</p>
-                <a href="#solucoes" class="primary-cta text-white font-bold py-4 px-10 rounded-lg text-lg inline-block">Explore o Futuro</a>
+        <section id="hero-section">
+            <div id="webgl-container"></div>
+            <div class="content-wrapper">
+                 <div class="max-w-md">
+                    <h1 class="text-5xl md:text-7xl font-black text-white leading-tight mb-6">Engenharia que <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">Transforma</span> a Indústria.</h1>
+                    <p class="text-lg md:text-xl text-slate-400 mb-10">A Salox, um projeto da Astronium, nasce para integrar inteligência e automação avançada, redefinindo os limites da eficiência industrial.</p>
+                    <a href="#solucoes" class="primary-cta text-white font-bold py-4 px-10 rounded-lg text-lg inline-block">Explore o Futuro</a>
+                </div>
             </div>
         </section>
 
         <!-- Seção Sobre -->
-        <section id="sobre" class="py-24">
+        <section id="sobre" class="py-24 bg-black">
             <div class="container mx-auto px-6">
                 <div class="grid md:grid-cols-2 gap-16 items-center">
                     <div class="space-y-6">
@@ -119,8 +105,8 @@
             </div>
         </section>
 
-        <!-- Seção Soluções com Gemini API -->
-        <section id="solucoes" class="py-24 bg-slate-900/50">
+        <!-- Seção Soluções -->
+        <section id="solucoes" class="py-24 bg-black">
             <div class="container mx-auto px-6 text-center">
                 <h2 class="text-4xl font-bold text-white mb-4">Nossas Verticais de Inovação</h2>
                 <p class="text-slate-400 max-w-2xl mx-auto mb-16">Desenvolvemos soluções modulares e integradas para impulsionar cada faceta da sua operação.</p>
@@ -142,17 +128,13 @@
                         <p class="text-slate-400">Redes de sensores que preveem falhas, otimizam a manutenção e fornecem uma visão completa dos seus ativos.</p>
                     </div>
                 </div>
-                <button id="open-gemini-modal" class="primary-cta text-white font-bold py-4 px-10 rounded-lg text-lg inline-block">
-                    ✨ Descreva seu Desafio Industrial
-                </button>
             </div>
         </section>
 
         <!-- Seção Contato -->
-        <section id="contato" class="py-24">
+        <section id="contato" class="py-24 bg-black">
             <div class="container mx-auto px-6">
                 <div class="relative text-center bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-800 p-10 md:p-16 rounded-2xl">
-                    <div class="absolute top-0 left-0 w-full h-full bg-cover bg-center opacity-5" style="background-image: url('https://placehold.co/1200x400/020617/FFFFFF?text=Grid+Tecnol%C3%B3gico');"></div>
                     <div class="relative z-10">
                         <h2 class="text-4xl font-bold text-white mb-4">Vamos Iniciar a Conversa.</h2>
                         <p class="text-slate-400 max-w-xl mx-auto mb-10">Seja para discutir um projeto complexo ou para explorar o potencial de uma parceria, nossa equipe está pronta.</p>
@@ -164,193 +146,176 @@
     </main>
 
     <!-- Rodapé -->
-    <footer class="border-t border-slate-800/50 text-slate-500 py-8">
+    <footer class="border-t border-slate-800/50 text-slate-500 py-8 bg-black">
         <div class="container mx-auto px-6 text-center">
             <p>&copy; 2024 Salox Industrial. Todos os direitos reservados.</p>
             <p class="text-sm">Um projeto de engenharia da <a href="#" class="font-semibold text-slate-400 hover:text-white transition-colors">Astronium</a>.</p>
         </div>
     </footer>
 
-    <!-- Modal do Gemini -->
-    <div id="gemini-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div class="modal-backdrop fixed inset-0"></div>
-        <div class="relative bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
-            <div class="flex justify-between items-center p-5 border-b border-slate-700">
-                <h3 class="text-xl font-bold text-white">Consultor de Soluções IA</h3>
-                <button id="close-gemini-modal" class="text-slate-400 hover:text-white">&times;</button>
-            </div>
-            <div class="p-6 space-y-4 overflow-y-auto">
-                <p class="text-slate-400">Descreva um problema ou desafio em sua operação industrial. Nossa IA irá analisar e propor uma abordagem conceitual utilizando as tecnologias da Salox.</p>
-                <textarea id="challenge-input" rows="4" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: 'Temos perdas de 15% na nossa linha de montagem por falhas humanas e paradas não programadas.'"></textarea>
-                <button id="generate-solution-btn" class="w-full primary-cta text-white font-bold py-3 px-8 rounded-lg">Gerar Solução Conceitual</button>
-                <div id="gemini-result-container" class="mt-4 hidden">
-                    <h4 class="text-lg font-bold text-white mb-2 border-t border-slate-700 pt-4">Análise e Proposta:</h4>
-                    <div id="gemini-loader" class="flex justify-center my-4"><div class="loader"></div></div>
-                    <div id="gemini-output" class="text-slate-300 bg-slate-800/50 p-4 rounded-lg whitespace-pre-wrap"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <!-- Scripts -->
-    <script>
-        // Lógica da Animação 3D (Malha Fluida)
+    <script type="module">
+        // Importações do Three.js e seus addons
+        import * as THREE from 'https://cdn.skypack.dev/three@0.128.0';
+        import { EffectComposer } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/postprocessing/EffectComposer.js';
+        import { RenderPass } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/postprocessing/RenderPass.js';
+        import { UnrealBloomPass } from 'https://cdn.skypack.dev/three@0.128.0/examples/jsm/postprocessing/UnrealBloomPass.js';
+
         window.addEventListener('load', function() {
-            const container = document.getElementById('3d-canvas-container');
+            // --- SETUP BÁSICO ---
+            const container = document.getElementById('webgl-container');
             if (!container) return;
 
-            let scene, camera, renderer, plane, clock;
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            const clock = new THREE.Clock();
             let mouse = new THREE.Vector2();
 
-            function init() {
-                // Relógio para animação contínua
-                clock = new THREE.Clock();
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+            renderer.toneMapping = THREE.ReinhardToneMapping;
+            container.appendChild(renderer.domElement);
 
-                // Cena
-                scene = new THREE.Scene();
+            scene.fog = new THREE.Fog(0x0A0A10, 8, 20);
 
-                // Câmera
-                camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
-                camera.position.z = 2;
+            // --- LUZES ---
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.5); 
+            scene.add(ambientLight);
+            const light1 = new THREE.PointLight(0x0077ff, 3, 40);
+            scene.add(light1);
+            const light2 = new THREE.PointLight(0xffffff, 2.5, 40);
+            scene.add(light2);
 
-                // Renderer
-                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-                renderer.setSize(container.offsetWidth, container.offsetHeight);
-                renderer.setPixelRatio(window.devicePixelRatio);
-                container.appendChild(renderer.domElement);
+            // --- MATERIAL E FÍSICA ---
+            const shapeMaterial = new THREE.MeshStandardMaterial({
+                color: 0xCCCCCC, 
+                metalness: 0.8,
+                roughness: 0.4
+            });
+            const shapes = [];
+            const boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 4.5); // Esfera invisível menor
 
-                // Geometria da Malha (Plano)
-                const geometry = new THREE.PlaneGeometry(15, 15, 60, 60);
-                const material = new THREE.MeshBasicMaterial({
-                    color: 0x3b82f6, // Azul do tema
-                    wireframe: true
+            // --- GRUPO PARA OS OBJETOS ---
+            const shapesGroup = new THREE.Group();
+            shapesGroup.position.x = 6; // Desloca todo o sistema bem mais para a direita
+            scene.add(shapesGroup);
+
+            // --- CRIAÇÃO DAS FORMAS GEOMÉTRICAS ---
+            const geometries = [
+                new THREE.TorusKnotGeometry(0.7, 0.2, 100, 16),
+                new THREE.ConeGeometry(0.7, 1.3, 32),
+                new THREE.BoxGeometry(0.4, 2.2, 0.4),
+                new THREE.TorusGeometry(0.7, 0.25, 16, 100),
+                new THREE.IcosahedronGeometry(1)
+            ];
+
+            geometries.forEach((geom, index) => {
+                const shape = new THREE.Mesh(geom, shapeMaterial);
+                
+                // Propriedades físicas e de animação
+                shape.targetPosition = new THREE.Vector3(
+                    (Math.random() - 0.5) * 6,
+                    (Math.random() - 0.5) * 5,
+                    (Math.random() - 0.5) * 6
+                );
+                shape.position.copy(shape.targetPosition).add(new THREE.Vector3(25, 0, 0)); // Posição inicial fora da tela
+
+                shape.velocity = new THREE.Vector3(
+                    (Math.random() - 0.5) * 1.5,
+                    (Math.random() - 0.5) * 1.5,
+                    (Math.random() - 0.5) * 1.5
+                );
+                shape.angularVelocity = new THREE.Vector3(
+                    (Math.random() - 0.5) * 0.5,
+                    (Math.random() - 0.5) * 0.5,
+                    (Math.random() - 0.5) * 0.5
+                );
+                geom.computeBoundingSphere();
+                shape.boundingSphere = geom.boundingSphere;
+
+                shapesGroup.add(shape);
+                shapes.push(shape);
+            });
+            
+            // --- PÓS-PROCESSAMENTO (BLOOM) ---
+            const composer = new EffectComposer(renderer);
+            composer.addPass(new RenderPass(scene, camera));
+            const bloomPass = new UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+            bloomPass.threshold = 0;
+            bloomPass.strength = 0.8; 
+            bloomPass.radius = 0.3;
+            composer.addPass(bloomPass);
+
+            camera.position.z = 8; // Câmera bem mais próxima
+
+            // --- ANIMAÇÃO E FÍSICA ---
+            function animate() {
+                requestAnimationFrame(animate);
+                const delta = clock.getDelta();
+                const elapsedTime = clock.getElapsedTime();
+
+                // Animação de entrada
+                const introDuration = 2.5;
+                const ease = (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+                const progress = Math.min(elapsedTime / introDuration, 1);
+                
+                // Atualizar posições e rotações
+                shapes.forEach(shape => {
+                    if (progress < 1) {
+                         // Animação de entrada
+                        shape.position.lerp(shape.targetPosition, ease(delta * 2));
+                    } else {
+                        // Movimento contínuo após a entrada
+                        shape.position.addScaledVector(shape.velocity, delta);
+
+                        // Colisão com a esfera invisível
+                        const distance = shape.position.length();
+                        if (distance + shape.boundingSphere.radius > boundingSphere.radius) {
+                            const normal = shape.position.clone().normalize();
+                            shape.velocity.reflect(normal);
+                            shape.position.copy(normal).multiplyScalar(boundingSphere.radius - shape.boundingSphere.radius);
+                        }
+                    }
+
+                    shape.rotation.x += shape.angularVelocity.x * delta;
+                    shape.rotation.y += shape.angularVelocity.y * delta;
+                    shape.rotation.z += shape.angularVelocity.z * delta;
                 });
 
-                plane = new THREE.Mesh(geometry, material);
-                // Armazena as posições originais para a animação não se acumular
-                plane.geometry.setAttribute('originalPosition', plane.geometry.attributes.position.clone());
-                
-                scene.add(plane);
+                // Movimento das luzes
+                light1.position.x = Math.sin(elapsedTime * 0.5) * 10;
+                light1.position.z = Math.cos(elapsedTime * 0.5) * 10;
+                light2.position.x = Math.cos(elapsedTime * 0.3) * 10;
+                light2.position.z = Math.sin(elapsedTime * 0.3) * 10;
 
-                // Event Listeners
-                window.addEventListener('resize', onWindowResize);
-                document.addEventListener('mousemove', onMouseMove);
+                // Interação com o mouse para mover a câmera
+                camera.position.x += (mouse.x * 5 - camera.position.x) * 0.05;
+                camera.position.y += (-mouse.y * 5 - camera.position.y) * 0.05;
+                camera.lookAt(shapesGroup.position);
+
+                composer.render();
             }
 
+            // --- EVENT LISTENERS ---
             function onWindowResize() {
-                camera.aspect = container.offsetWidth / container.offsetHeight;
+                const width = container.offsetWidth;
+                const height = container.offsetHeight;
+                camera.aspect = width / height;
                 camera.updateProjectionMatrix();
-                renderer.setSize(container.offsetWidth, container.offsetHeight);
+                renderer.setSize(width, height);
+                composer.setSize(width, height);
             }
 
             function onMouseMove(event) {
-                // Normaliza a posição do mouse de -1 a 1
-                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+                mouse.x = (event.clientX / window.innerWidth) - 0.5;
+                mouse.y = (event.clientY / window.innerHeight) - 0.5;
             }
 
-            function animate() {
-                requestAnimationFrame(animate);
-                const elapsedTime = clock.getElapsedTime();
+            window.addEventListener('resize', onWindowResize);
+            document.addEventListener('mousemove', onMouseMove);
 
-                // Animação da Malha
-                const originalPos = plane.geometry.getAttribute('originalPosition');
-                const currentPos = plane.geometry.getAttribute('position');
-
-                for (let i = 0; i < originalPos.count; i++) {
-                    const x = originalPos.getX(i);
-                    const y = originalPos.getY(i);
-                    
-                    // Ondulação principal baseada no tempo
-                    const wave1 = 0.15 * Math.sin(x * 2 + elapsedTime * 1.5);
-                    const wave2 = 0.15 * Math.sin(y * 1.5 + elapsedTime * 1.0);
-                    
-                    currentPos.setZ(i, wave1 + wave2);
-                }
-                plane.geometry.attributes.position.needsUpdate = true;
-
-                // Animação sutil da câmera baseada no mouse
-                camera.position.x += (mouse.x * 0.5 - camera.position.x) * 0.02;
-                camera.position.y += (-mouse.y * 0.5 - camera.position.y) * 0.02;
-                camera.lookAt(scene.position);
-                
-                renderer.render(scene, camera);
-            }
-
-            init();
             animate();
-        });
-
-        // Lógica do Modal e Gemini API
-        document.addEventListener('DOMContentLoaded', () => {
-            const modal = document.getElementById('gemini-modal');
-            const openBtn = document.getElementById('open-gemini-modal');
-            const closeBtn = document.getElementById('close-gemini-modal');
-            const generateBtn = document.getElementById('generate-solution-btn');
-            const challengeInput = document.getElementById('challenge-input');
-            const resultContainer = document.getElementById('gemini-result-container');
-            const loader = document.getElementById('gemini-loader');
-            const outputDiv = document.getElementById('gemini-output');
-
-            openBtn.addEventListener('click', () => modal.classList.remove('hidden'));
-            closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
-            modal.querySelector('.modal-backdrop').addEventListener('click', () => modal.classList.add('hidden'));
-
-            generateBtn.addEventListener('click', async () => {
-                const userInput = challengeInput.value;
-                if (!userInput.trim()) {
-                    outputDiv.innerText = "Por favor, descreva seu desafio.";
-                    resultContainer.classList.remove('hidden');
-                    return;
-                }
-
-                resultContainer.classList.remove('hidden');
-                loader.style.display = 'flex';
-                outputDiv.style.display = 'none';
-                generateBtn.disabled = true;
-                generateBtn.innerText = "Analisando...";
-
-                const prompt = `Você é um engenheiro de soluções sênior da Salox, uma indústria de tecnologia de ponta. Um potencial cliente descreveu o seguinte desafio: "${userInput}". Com base nas especialidades da Salox em Automação Inteligente, Ciência dos Materiais e Ecossistemas IoT Preditivos, esboce uma abordagem conceitual de alto nível para resolver este problema. A resposta deve ser profissional, concisa e dividida em: 1. Análise do Desafio, 2. Proposta de Solução Salox, 3. Benefícios Esperados. Formate a resposta de forma clara.`;
-
-                try {
-                    const apiKey = ""; // A chave da API será injetada pelo ambiente
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
-                    
-                    const payload = {
-                        contents: [{
-                            parts: [{ text: prompt }]
-                        }]
-                    };
-
-                    const response = await fetch(apiUrl, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`API Error: ${response.statusText}`);
-                    }
-
-                    const result = await response.json();
-                    
-                    if (result.candidates && result.candidates.length > 0) {
-                        const text = result.candidates[0].content.parts[0].text;
-                        outputDiv.innerText = text;
-                    } else {
-                        throw new Error("Resposta da API inválida ou vazia.");
-                    }
-
-                } catch (error) {
-                    console.error("Erro ao chamar a API Gemini:", error);
-                    outputDiv.innerText = "Desculpe, ocorreu um erro ao processar sua solicitação. Por favor, tente novamente mais tarde.";
-                } finally {
-                    loader.style.display = 'none';
-                    outputDiv.style.display = 'block';
-                    generateBtn.disabled = false;
-                    generateBtn.innerText = "Gerar Solução Conceitual";
-                }
-            });
         });
     </script>
 </body>
