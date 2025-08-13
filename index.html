@@ -21,21 +21,22 @@
             overflow: hidden;
             background-color: #020617; /* slate-950 */
         }
-        .hero-bg::before {
-            content: '';
+        #3d-canvas-container {
             position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 1200px;
-            height: 1200px;
-            transform: translate(-50%, -50%);
-            background-image: radial-gradient(circle, rgba(29, 78, 216, 0.15) 0%, rgba(2, 6, 23, 0) 60%);
-            pointer-events: none;
-            z-index: 0;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        #3d-canvas-container canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
         }
         .content-wrapper {
             position: relative;
-            z-index: 1;
+            z-index: 2; /* Garante que o conteúdo fique sobre a animação */
         }
         .glass-card {
             background-color: rgba(15, 23, 42, 0.5); /* slate-900/50 */
@@ -54,10 +55,21 @@
         .primary-cta:hover {
             box-shadow: 0 0 25px rgba(59, 130, 246, 0.5);
         }
-        #3d-container {
-            cursor: grab;
-            width: 100%;
-            height: 450px;
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -66,36 +78,26 @@
     <!-- Cabeçalho e Navegação -->
     <header class="bg-slate-950/70 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 border-b border-slate-800/50">
         <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-black text-white tracking-wider">
-                SALOX
-            </div>
+            <div class="text-2xl font-black text-white tracking-wider">SALOX</div>
             <nav class="hidden md:flex items-center space-x-8">
                 <a href="#sobre" class="text-slate-300 hover:text-white transition-colors">Sobre</a>
                 <a href="#solucoes" class="text-slate-300 hover:text-white transition-colors">Soluções</a>
-                <a href="#tecnologia" class="text-slate-300 hover:text-white transition-colors">Tecnologia</a>
                 <a href="#contato" class="primary-cta text-white font-semibold px-5 py-2 rounded-lg">Fale Conosco</a>
             </nav>
             <button class="md:hidden text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" /></svg>
             </button>
         </div>
     </header>
 
-    <!-- Seção Hero -->
     <main>
+        <!-- Seção Hero com Animação 3D -->
         <section class="hero-bg min-h-screen flex items-center justify-center pt-24 pb-16">
+            <div id="3d-canvas-container"></div>
             <div class="content-wrapper container mx-auto px-6 text-center">
-                <h1 class="text-5xl md:text-7xl font-black text-white leading-tight mb-6">
-                    Engenharia que <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">Transforma</span> a Indústria.
-                </h1>
-                <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10">
-                    A Salox, um projeto da Astronium, nasce para integrar inteligência e automação avançada, redefinindo os limites da eficiência industrial.
-                </p>
-                <a href="#solucoes" class="primary-cta text-white font-bold py-4 px-10 rounded-lg text-lg inline-block">
-                    Explore o Futuro
-                </a>
+                <h1 class="text-5xl md:text-7xl font-black text-white leading-tight mb-6">Engenharia que <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-400">Transforma</span> a Indústria.</h1>
+                <p class="text-lg md:text-xl text-slate-400 max-w-3xl mx-auto mb-10">A Salox, um projeto da Astronium, nasce para integrar inteligência e automação avançada, redefinindo os limites da eficiência industrial.</p>
+                <a href="#solucoes" class="primary-cta text-white font-bold py-4 px-10 rounded-lg text-lg inline-block">Explore o Futuro</a>
             </div>
         </section>
 
@@ -106,21 +108,24 @@
                     <div class="space-y-6">
                         <h2 class="text-4xl font-bold text-white">Forjados em Excelência. Focados no Amanhã.</h2>
                         <p>A Salox não é apenas uma indústria. Somos a materialização de décadas de expertise em engenharia da Astronium, canalizada para resolver os desafios mais críticos da produção moderna. Nossa missão é clara: desenvolver tecnologia que não só otimiza, mas também inspira uma nova era industrial.</p>
-                        <p class="text-slate-400">Unimos a precisão da engenharia de ponta com a visão estratégica para criar sistemas autônomos, eficientes e sustentáveis. Estamos construindo o alicerce para a indústria 4.0.</p>
+                        <p class="text-slate-400">Unimos a precisão da engenharia de ponta com a visão estratégica para criar sistemas autônomos, eficientes e sustentáveis.</p>
                     </div>
-                    <!-- Container para a animação 3D -->
-                    <div id="3d-container"></div>
+                     <div>
+                        <div class="p-2 rounded-lg bg-gradient-to-br from-blue-500 to-indigo-600">
+                             <img src="https://placehold.co/600x450/0f172a/FFFFFF?text=Engenharia+Avan%C3%A7ada" alt="Imagem representando engenharia avançada" class="rounded-md w-full h-auto">
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Seção Soluções -->
+        <!-- Seção Soluções com Gemini API -->
         <section id="solucoes" class="py-24 bg-slate-900/50">
             <div class="container mx-auto px-6 text-center">
                 <h2 class="text-4xl font-bold text-white mb-4">Nossas Verticais de Inovação</h2>
                 <p class="text-slate-400 max-w-2xl mx-auto mb-16">Desenvolvemos soluções modulares e integradas para impulsionar cada faceta da sua operação.</p>
-                <div class="grid md:grid-cols-3 gap-8">
-                    <!-- Cards de Soluções -->
+                <div class="grid md:grid-cols-3 gap-8 mb-16">
+                    <!-- Cards -->
                     <div class="glass-card p-8 rounded-xl text-left">
                         <div class="mb-6"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg></div>
                         <h3 class="text-xl font-bold text-white mb-3">Automação Inteligente</h3>
@@ -134,9 +139,12 @@
                     <div class="glass-card p-8 rounded-xl text-left">
                         <div class="mb-6"><svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg></div>
                         <h3 class="text-xl font-bold text-white mb-3">Ecossistema IoT Preditivo</h3>
-                        <p class="text-slate-400">Redes de sensores que preveem falhas, otimizam a manutenção e fornecem uma visão completa dos seus ativos em tempo real.</p>
+                        <p class="text-slate-400">Redes de sensores que preveem falhas, otimizam a manutenção e fornecem uma visão completa dos seus ativos.</p>
                     </div>
                 </div>
+                <button id="open-gemini-modal" class="primary-cta text-white font-bold py-4 px-10 rounded-lg text-lg inline-block">
+                    ✨ Descreva seu Desafio Industrial
+                </button>
             </div>
         </section>
 
@@ -148,9 +156,7 @@
                     <div class="relative z-10">
                         <h2 class="text-4xl font-bold text-white mb-4">Vamos Iniciar a Conversa.</h2>
                         <p class="text-slate-400 max-w-xl mx-auto mb-10">Seja para discutir um projeto complexo ou para explorar o potencial de uma parceria, nossa equipe está pronta.</p>
-                        <a href="mailto:contato@salox.ind.br" class="primary-cta text-white font-bold py-4 px-10 rounded-lg text-lg inline-block">
-                            Enviar um E-mail
-                        </a>
+                        <a href="mailto:contato@salox.ind.br" class="primary-cta text-white font-bold py-4 px-10 rounded-lg text-lg inline-block">Enviar um E-mail</a>
                     </div>
                 </div>
             </div>
@@ -165,77 +171,187 @@
         </div>
     </footer>
 
-    <!-- Script para a lógica do Three.js -->
+    <!-- Modal do Gemini -->
+    <div id="gemini-modal" class="hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div class="modal-backdrop fixed inset-0"></div>
+        <div class="relative bg-slate-900 border border-slate-700 rounded-2xl w-full max-w-2xl max-h-[90vh] flex flex-col">
+            <div class="flex justify-between items-center p-5 border-b border-slate-700">
+                <h3 class="text-xl font-bold text-white">Consultor de Soluções IA</h3>
+                <button id="close-gemini-modal" class="text-slate-400 hover:text-white">&times;</button>
+            </div>
+            <div class="p-6 space-y-4 overflow-y-auto">
+                <p class="text-slate-400">Descreva um problema ou desafio em sua operação industrial. Nossa IA irá analisar e propor uma abordagem conceitual utilizando as tecnologias da Salox.</p>
+                <textarea id="challenge-input" rows="4" class="w-full bg-slate-800 border border-slate-600 rounded-lg p-3 text-white focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Ex: 'Temos perdas de 15% na nossa linha de montagem por falhas humanas e paradas não programadas.'"></textarea>
+                <button id="generate-solution-btn" class="w-full primary-cta text-white font-bold py-3 px-8 rounded-lg">Gerar Solução Conceitual</button>
+                <div id="gemini-result-container" class="mt-4 hidden">
+                    <h4 class="text-lg font-bold text-white mb-2 border-t border-slate-700 pt-4">Análise e Proposta:</h4>
+                    <div id="gemini-loader" class="flex justify-center my-4"><div class="loader"></div></div>
+                    <div id="gemini-output" class="text-slate-300 bg-slate-800/50 p-4 rounded-lg whitespace-pre-wrap"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
     <script>
-        // Encontra o container
-        const container = document.getElementById('3d-container');
+        // Lógica da Animação 3D (Malha Fluida)
+        window.addEventListener('load', function() {
+            const container = document.getElementById('3d-canvas-container');
+            if (!container) return;
 
-        // Variáveis para a cena
-        let scene, camera, renderer, shape;
+            let scene, camera, renderer, plane, clock;
+            let mouse = new THREE.Vector2();
 
-        // Variáveis para o movimento do mouse
-        let mouseX = 0;
-        let mouseY = 0;
-        let targetX = 0;
-        let targetY = 0;
-        const windowHalfX = window.innerWidth / 2;
-        const windowHalfY = window.innerHeight / 2;
+            function init() {
+                // Relógio para animação contínua
+                clock = new THREE.Clock();
 
-        function init() {
-            // 1. Cena
-            scene = new THREE.Scene();
+                // Cena
+                scene = new THREE.Scene();
 
-            // 2. Câmera
-            camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
-            camera.position.z = 5;
+                // Câmera
+                camera = new THREE.PerspectiveCamera(75, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+                camera.position.z = 2;
 
-            // 3. Renderer
-            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-            renderer.setSize(container.clientWidth, container.clientHeight);
-            container.appendChild(renderer.domElement);
+                // Renderer
+                renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                renderer.setSize(container.offsetWidth, container.offsetHeight);
+                renderer.setPixelRatio(window.devicePixelRatio);
+                container.appendChild(renderer.domElement);
 
-            // 4. Objeto 3D (Icosaedro em Wireframe)
-            const geometry = new THREE.IcosahedronGeometry(2, 0);
-            const material = new THREE.MeshBasicMaterial({ color: 0x3b82f6, wireframe: true }); // Azul do tema
-            shape = new THREE.Mesh(geometry, material);
-            scene.add(shape);
+                // Geometria da Malha (Plano)
+                const geometry = new THREE.PlaneGeometry(15, 15, 60, 60);
+                const material = new THREE.MeshBasicMaterial({
+                    color: 0x3b82f6, // Azul do tema
+                    wireframe: true
+                });
 
-            // 5. Event Listeners
-            document.addEventListener('mousemove', onDocumentMouseMove);
-            window.addEventListener('resize', onWindowResize);
-        }
+                plane = new THREE.Mesh(geometry, material);
+                // Armazena as posições originais para a animação não se acumular
+                plane.geometry.setAttribute('originalPosition', plane.geometry.attributes.position.clone());
+                
+                scene.add(plane);
 
-        function onDocumentMouseMove(event) {
-            mouseX = (event.clientX - windowHalfX);
-            mouseY = (event.clientY - windowHalfY);
-        }
-
-        function onWindowResize() {
-            camera.aspect = container.clientWidth / container.clientHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(container.clientWidth, container.clientHeight);
-        }
-
-        function animate() {
-            requestAnimationFrame(animate);
-
-            // Interpolação suave para o movimento do mouse
-            targetX = mouseX * 0.001;
-            targetY = mouseY * 0.001;
-
-            // Rotação contínua e interativa
-            if (shape) {
-                shape.rotation.y += 0.005 + (targetX - shape.rotation.y) * 0.05;
-                shape.rotation.x += 0.005 + (targetY - shape.rotation.x) * 0.05;
+                // Event Listeners
+                window.addEventListener('resize', onWindowResize);
+                document.addEventListener('mousemove', onMouseMove);
             }
-            
-            renderer.render(scene, camera);
-        }
 
-        // Inicia tudo
-        init();
-        animate();
+            function onWindowResize() {
+                camera.aspect = container.offsetWidth / container.offsetHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.offsetWidth, container.offsetHeight);
+            }
+
+            function onMouseMove(event) {
+                // Normaliza a posição do mouse de -1 a 1
+                mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+                mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+            }
+
+            function animate() {
+                requestAnimationFrame(animate);
+                const elapsedTime = clock.getElapsedTime();
+
+                // Animação da Malha
+                const originalPos = plane.geometry.getAttribute('originalPosition');
+                const currentPos = plane.geometry.getAttribute('position');
+
+                for (let i = 0; i < originalPos.count; i++) {
+                    const x = originalPos.getX(i);
+                    const y = originalPos.getY(i);
+                    
+                    // Ondulação principal baseada no tempo
+                    const wave1 = 0.15 * Math.sin(x * 2 + elapsedTime * 1.5);
+                    const wave2 = 0.15 * Math.sin(y * 1.5 + elapsedTime * 1.0);
+                    
+                    currentPos.setZ(i, wave1 + wave2);
+                }
+                plane.geometry.attributes.position.needsUpdate = true;
+
+                // Animação sutil da câmera baseada no mouse
+                camera.position.x += (mouse.x * 0.5 - camera.position.x) * 0.02;
+                camera.position.y += (-mouse.y * 0.5 - camera.position.y) * 0.02;
+                camera.lookAt(scene.position);
+                
+                renderer.render(scene, camera);
+            }
+
+            init();
+            animate();
+        });
+
+        // Lógica do Modal e Gemini API
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('gemini-modal');
+            const openBtn = document.getElementById('open-gemini-modal');
+            const closeBtn = document.getElementById('close-gemini-modal');
+            const generateBtn = document.getElementById('generate-solution-btn');
+            const challengeInput = document.getElementById('challenge-input');
+            const resultContainer = document.getElementById('gemini-result-container');
+            const loader = document.getElementById('gemini-loader');
+            const outputDiv = document.getElementById('gemini-output');
+
+            openBtn.addEventListener('click', () => modal.classList.remove('hidden'));
+            closeBtn.addEventListener('click', () => modal.classList.add('hidden'));
+            modal.querySelector('.modal-backdrop').addEventListener('click', () => modal.classList.add('hidden'));
+
+            generateBtn.addEventListener('click', async () => {
+                const userInput = challengeInput.value;
+                if (!userInput.trim()) {
+                    outputDiv.innerText = "Por favor, descreva seu desafio.";
+                    resultContainer.classList.remove('hidden');
+                    return;
+                }
+
+                resultContainer.classList.remove('hidden');
+                loader.style.display = 'flex';
+                outputDiv.style.display = 'none';
+                generateBtn.disabled = true;
+                generateBtn.innerText = "Analisando...";
+
+                const prompt = `Você é um engenheiro de soluções sênior da Salox, uma indústria de tecnologia de ponta. Um potencial cliente descreveu o seguinte desafio: "${userInput}". Com base nas especialidades da Salox em Automação Inteligente, Ciência dos Materiais e Ecossistemas IoT Preditivos, esboce uma abordagem conceitual de alto nível para resolver este problema. A resposta deve ser profissional, concisa e dividida em: 1. Análise do Desafio, 2. Proposta de Solução Salox, 3. Benefícios Esperados. Formate a resposta de forma clara.`;
+
+                try {
+                    const apiKey = ""; // A chave da API será injetada pelo ambiente
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
+                    
+                    const payload = {
+                        contents: [{
+                            parts: [{ text: prompt }]
+                        }]
+                    };
+
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`API Error: ${response.statusText}`);
+                    }
+
+                    const result = await response.json();
+                    
+                    if (result.candidates && result.candidates.length > 0) {
+                        const text = result.candidates[0].content.parts[0].text;
+                        outputDiv.innerText = text;
+                    } else {
+                        throw new Error("Resposta da API inválida ou vazia.");
+                    }
+
+                } catch (error) {
+                    console.error("Erro ao chamar a API Gemini:", error);
+                    outputDiv.innerText = "Desculpe, ocorreu um erro ao processar sua solicitação. Por favor, tente novamente mais tarde.";
+                } finally {
+                    loader.style.display = 'none';
+                    outputDiv.style.display = 'block';
+                    generateBtn.disabled = false;
+                    generateBtn.innerText = "Gerar Solução Conceitual";
+                }
+            });
+        });
     </script>
-
 </body>
 </html>
